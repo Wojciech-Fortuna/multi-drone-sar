@@ -1,0 +1,132 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "../protos/GeneratedTerrain.proto"
+
+WorldInfo {
+  basicTimeStep 32
+}
+
+Viewpoint {
+  orientation -0.0709 0.996 0.0587 0.597
+  position -183 -6.78 141
+  followType "None"
+}
+
+Background {
+  skyColor [
+    0.7 0.85 1
+  ]
+}
+
+DirectionalLight {
+  direction -0.5 -1 -0.5
+  intensity 2
+}
+
+DEF TERRAIN GeneratedTerrain {
+}
+
+DEF TARGET_PERSON Solid {
+  translation 0 0 0
+  name "target_person"
+
+  children [
+    Transform {
+      children [
+        Shape {
+          appearance DEF TARGET_APPEARANCE PBRAppearance {
+            baseColor 1 0.85 0
+            roughness 0.4
+            transparency 1
+          }
+
+          geometry Cylinder {
+            radius 1.2
+            height 2.0
+          }
+        }
+      ]
+    }
+  ]
+}
+
+DEF DRONE_0 Robot {
+  translation 9.735867964608252 31.23641657681769 9.735867964608252
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.1 0.3 1
+        roughness 0.4
+      }
+      geometry Sphere {
+        radius 2
+      }
+    }
+  ]
+  name "drone_0"
+  boundingObject Sphere {
+    radius 2
+  }
+  controller "drone_controller"
+  supervisor TRUE
+}
+
+DEF DRONE_1 Robot {
+  translation -9.735845472029764 28.649883255079196 -29.735845472029762
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.25 0.1
+        roughness 0.4
+      }
+      geometry Sphere {
+        radius 2
+      }
+    }
+  ]
+  name "drone_1"
+  boundingObject Sphere {
+    radius 2
+  }
+  controller "drone_controller"
+  supervisor TRUE
+}
+
+DEF DRONE_2 Robot {
+  translation -10.365186623003552 27.666822256899184 9.634813376996446
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.1 0.8 0.2
+        roughness 0.4
+      }
+      geometry Sphere {
+        radius 2
+      }
+    }
+  ]
+  name "drone_2"
+  boundingObject Sphere {
+    radius 2
+  }
+  controller "drone_controller"
+  supervisor TRUE
+}
+
+DEF TARGET_MANAGER Robot {
+  translation 0 0 0
+  supervisor TRUE
+  controller "target_controller"
+  name "target_manager"
+  children [
+  ]
+}
+
+DEF MISSION_MANAGER Robot {
+  translation 0 0 0
+  supervisor TRUE
+  controller "mission_manager_controller"
+  name "mission_manager"
+  children [
+  ]
+}
