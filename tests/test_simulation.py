@@ -4,7 +4,10 @@ from controllers.terrain import Terrain
 from controllers.probability_map import ProbabilityMap
 from controllers.greedy_planner import GreedyPlanner
 from controllers.simulation import SimulationManager
-from controllers.webots_export import export_trajectories_to_json
+from controllers.webots_export import (
+    export_trajectories_to_json,
+    export_webots_world,
+)
 from controllers.webots_terrain_export import export_terrain_to_webots_proto
 
 from tests.test_utils import reset_webots_state, reset_mission_status
@@ -41,7 +44,8 @@ def main():
     start_positions = [
         np.array([0.0, 0.0, 30.0]),
         np.array([20.0, 0.0, 30.0]),
-        np.array([-20.0, 0.0, 30.0])
+        np.array([-20.0, 0.0, 30.0]),
+        np.array([-10.0, 0.0, 30.0])
     ]
 
     planning_result = planner.plan_multi_drone(
@@ -53,6 +57,11 @@ def main():
     export_trajectories_to_json(
         planning_result["trajectories"],
         "results/trajectories.json"
+    )
+
+    export_webots_world(
+        planning_result["trajectories"],
+        "worlds/sar_minimal.wbt"
     )
 
     simulation = SimulationManager(

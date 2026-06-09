@@ -5,7 +5,10 @@ from controllers.probability_map import ProbabilityMap
 from controllers.greedy_planner import GreedyPlanner
 from controllers.visualization import plot_multi_trajectory_2d
 from controllers.metrics import multi_trajectory_distance, count_multi_waypoints
-from controllers.webots_export import export_trajectories_to_json
+from controllers.webots_export import (
+    export_trajectories_to_json,
+    export_webots_world,
+)
 from controllers.webots_terrain_export import export_terrain_to_webots_proto
 
 from tests.test_utils import reset_webots_state, reset_mission_status
@@ -67,6 +70,11 @@ def main():
     export_trajectories_to_json(
         result["trajectories"],
         "results/trajectories.json"
+    )
+
+    export_webots_world(
+        result["trajectories"],
+        "worlds/sar_minimal.wbt"
     )
 
     plot_multi_trajectory_2d(

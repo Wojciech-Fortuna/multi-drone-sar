@@ -29,7 +29,6 @@ DEF TERRAIN GeneratedTerrain {
 DEF TARGET_PERSON Solid {
   translation 0 0 0
   name "target_person"
-
   children [
     Transform {
       children [
@@ -39,7 +38,6 @@ DEF TARGET_PERSON Solid {
             roughness 0.4
             transparency 1
           }
-
           geometry Cylinder {
             radius 1.2
             height 2.0
@@ -50,8 +48,9 @@ DEF TARGET_PERSON Solid {
   ]
 }
 
+
 DEF DRONE_0 Robot {
-  translation 9.735867964608252 31.23641657681769 9.735867964608252
+  translation 0.000 0.000 30.000
   children [
     Shape {
       appearance PBRAppearance {
@@ -72,7 +71,7 @@ DEF DRONE_0 Robot {
 }
 
 DEF DRONE_1 Robot {
-  translation -9.735845472029764 28.649883255079196 -29.735845472029762
+  translation 20.000 0.000 30.000
   children [
     Shape {
       appearance PBRAppearance {
@@ -93,7 +92,7 @@ DEF DRONE_1 Robot {
 }
 
 DEF DRONE_2 Robot {
-  translation -10.365186623003552 27.666822256899184 9.634813376996446
+  translation -20.000 0.000 30.000
   children [
     Shape {
       appearance PBRAppearance {
@@ -112,6 +111,28 @@ DEF DRONE_2 Robot {
   controller "drone_controller"
   supervisor TRUE
 }
+
+DEF DRONE_3 Robot {
+  translation -10.000 0.000 30.000
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.1 0.8
+        roughness 0.4
+      }
+      geometry Sphere {
+        radius 2
+      }
+    }
+  ]
+  name "drone_3"
+  boundingObject Sphere {
+    radius 2
+  }
+  controller "drone_controller"
+  supervisor TRUE
+}
+
 
 DEF TARGET_MANAGER Robot {
   translation 0 0 0
