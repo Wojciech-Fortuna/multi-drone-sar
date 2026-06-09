@@ -21,9 +21,17 @@ class GreedyPlanner:
     def create_candidate_points(self, step=10.0):
         candidates = []
 
-        x_values = np.arange(self.terrain.x_min, self.terrain.x_max, step)
+        x_values = np.arange(
+            self.terrain.x_min,
+            self.terrain.x_max + 0.5 * step,
+            step
+        )
 
-        y_values = np.arange(self.terrain.y_min, self.terrain.y_max, step)
+        y_values = np.arange(
+            self.terrain.y_min,
+            self.terrain.y_max + 0.5 * step,
+            step
+        )
 
         for x in x_values:
             for y in y_values:
@@ -110,7 +118,20 @@ class GreedyPlanner:
                     best_visible_cells = newly_visible
                     best_travel_time = travel_time
 
-            if best_candidate is None or best_score <= 0:
+            if best_candidate is None:
+                print(
+                    f"[GreedyPlanner] Stopped: "
+                    f"remaining_cells={len(unobserved)}, "
+                    f"drone_times={current_time}"
+                )
+                break
+
+            if best_score <= 0:
+                print(
+                    f"[GreedyPlanner] Stopped: "
+                    f"no additional coverage possible, "
+                    f"remaining_cells={len(unobserved)}"
+                )
                 break
 
             trajectory.append(best_candidate)
@@ -191,7 +212,20 @@ class GreedyPlanner:
                         best_visible_cells = newly_visible
                         best_travel_time = travel_time
 
-            if best_candidate is None or best_score <= 0:
+            if best_candidate is None:
+                print(
+                    f"[GreedyPlanner] Stopped: "
+                    f"remaining_cells={len(unobserved)}, "
+                    f"drone_times={current_times}"
+                )
+                break
+
+            if best_score <= 0:
+                print(
+                    f"[GreedyPlanner] Stopped: "
+                    f"no additional coverage possible, "
+                    f"remaining_cells={len(unobserved)}"
+                )
                 break
 
             trajectories[best_drone].append(best_candidate)

@@ -1,26 +1,43 @@
 import numpy as np
 
 class ProbabilityMap:
-    def __init__(self, terrain, sigma=15.0):
+    def __init__(
+        self,
+        terrain,
+        probability_function,
+    ):
         self.terrain = terrain
         self.cells = []
         self.probabilities = []
+        self.probability_function = probability_function
 
-        self._generate_probability_map(sigma)
+        self._generate_probability_map()
 
-    def _generate_probability_map(self, sigma):
-        hotspot = np.array([10.0, 10.0])
-
+    def _generate_probability_map(self):
         for x in self.terrain.x_values:
             for y in self.terrain.y_values:
-                pos = np.array([x, y])
-                dist_sq = np.sum((pos - hotspot) ** 2)
-
-                p = np.exp(-dist_sq / (2 * sigma ** 2))
-
                 z = self.terrain.get_height(x, y)
-                self.cells.append(np.array([x, y, z]))
+
+                cell = np.array([x, y, z])
+
+                p = self.probability_function(x, y, z)
+
+                self.cells.append(cell)
                 self.probabilities.append(p)
 
-        self.probabilities = np.array(self.probabilities)
-        self.probabilities = self.probabilities / np.sum(self.probabilities)
+        self.probabilities = np.array(
+            self.probabilities
+        )
+
+        total_probability = np.sum(
+            self.probabilities
+        )
+
+        if total_probability <= 0:
+            raise ValueError(
+                "Probability map has zero total probability."
+            )
+
+        self.probabilities = (
+            self.probabilities / total_probability
+        )

@@ -40,7 +40,5 @@ plots/*.png
 # Generated terrain proto
 protos/GeneratedTerrain.proto
 
-# Generated simulation results
-results/mission_status.json
-results/target_status.json
-results/trajectories.json
+# Generated results
+results/
