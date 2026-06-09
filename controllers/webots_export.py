@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, Iterable, Sequence, Any
+from typing import Any, Dict, Iterable, Sequence
+
+
+DRONE_MODEL_URL = "../assets/Drone_Costum/Material/drone_costum.dae"
+HUMAN_MODEL_URL = "../assets/Boy/boy.dae"
+
+DRONE_SCALE = 0.5
+HUMAN_SCALE = 0.5
 
 
 def _point_to_list(point: Any) -> list[float]:
@@ -55,15 +62,6 @@ def export_webots_world(
     if not data:
         raise ValueError("Cannot export Webots world without any drone trajectories.")
 
-    colors = [
-        "0.1 0.3 1",
-        "1 0.25 0.1",
-        "0.1 0.8 0.2",
-        "0.8 0.1 0.8",
-        "0.1 0.8 0.8",
-        "0.9 0.9 0.1",
-    ]
-
     drone_blocks: list[str] = []
 
     for i, (drone_name, trajectory) in enumerate(data.items()):
@@ -71,27 +69,34 @@ def export_webots_world(
             raise ValueError(f"Drone {drone_name} has an empty trajectory.")
 
         start_x, start_y, start_z = trajectory[0]
-        color = colors[i % len(colors)]
 
         drone_blocks.append(
             f"""
 DEF DRONE_{i} Robot {{
   translation {start_x:.3f} {start_y:.3f} {start_z:.3f}
+
   children [
-    Shape {{
-      appearance PBRAppearance {{
-        baseColor {color}
-        roughness 0.4
-      }}
-      geometry Sphere {{
-        radius 2
-      }}
+    Transform {{
+      rotation 0 0 1 1.5708
+      scale {DRONE_SCALE} {DRONE_SCALE} {DRONE_SCALE}
+
+      children [
+        CadShape {{
+          castShadows FALSE
+          url [
+            "{DRONE_MODEL_URL}"
+          ]
+        }}
+      ]
     }}
   ]
+
   name "{drone_name}"
-  boundingObject Sphere {{
-    radius 2
+
+  boundingObject Box {{
+    size 4 4 1
   }}
+
   controller "drone_controller"
   supervisor TRUE
 }}
@@ -127,25 +132,28 @@ DEF TERRAIN GeneratedTerrain {{
 }}
 
 DEF TARGET_PERSON Solid {{
-  translation 0 0 0
+  translation 0 0 -1000
   name "target_person"
+
   children [
     Transform {{
+      rotation 0 0 1 1.5708
+      scale {HUMAN_SCALE} {HUMAN_SCALE} {HUMAN_SCALE}
+
       children [
-        Shape {{
-          appearance DEF TARGET_APPEARANCE PBRAppearance {{
-            baseColor 1 0.85 0
-            roughness 0.4
-            transparency 1
-          }}
-          geometry Cylinder {{
-            radius 1.2
-            height 2.0
-          }}
+        CadShape {{
+          castShadows FALSE
+          url [
+            "{HUMAN_MODEL_URL}"
+          ]
         }}
       ]
     }}
   ]
+
+  boundingObject Box {{
+    size 1 1 2
+  }}
 }}
 
 {''.join(drone_blocks)}
