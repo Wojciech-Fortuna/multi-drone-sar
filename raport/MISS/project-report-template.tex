@@ -1210,52 +1210,16 @@ visualization.
 
 The main conclusions are as follows:
 \begin{itemize}
-    \item terrain geometry has a strong influence on detection capability,
-    \item increasing the detection radius improves coverage and reduces expected detection time,
-    \item using more drones improves parallel search, but the gain may saturate,
-    \item the greedy planner is fast and effective as a baseline method,
-    \item the genetic algorithm can improve solution quality but requires more computation,
-    \item expected target detection time is a better mission-oriented metric than coverage alone.
+    \item terrain geometry has a strong influence on detection capability because line-of-sight restrictions can prevent observation even when the target is close to a drone,
+    \item the detection-radius plots show that sensor range is one of the most influential mission parameters: for the smallest tested radius both planners remained close to the full mission time budget, while larger radii strongly improved coverage and reduced expected target detection time,
+    \item for larger detection radii, both planners reached high coverage while requiring fewer effective observation moves, which shows that better sensing can also reduce unnecessary travel,
+    \item the fleet-size plots show that adding drones improves parallel search and reduces expected detection time, especially for the greedy planner, but the improvement saturates after full or near-full coverage is reached,
+    \item the coverage-per-distance plots show that more drones do not automatically mean better efficiency, because additional drones can increase total travelled distance or create redundant coverage,
+    \item the greedy planner is fast, interpretable, and effective as a baseline method; in the experiments it achieved strong coverage, but often at the cost of longer total trajectories,
+    \item the genetic algorithm usually produced shorter and more distance-efficient trajectories, but its results were less stable in single runs due to the stochastic nature of evolutionary optimization; repeated runs and confidence intervals would be needed for stronger statistical conclusions,
+    \item expected target detection time is a better mission-oriented metric than coverage alone, because it captures not only whether important regions are observed, but also how quickly high-probability target locations are reached,
+    \item no single metric is sufficient on its own: coverage, expected detection time, total distance, and coverage per distance should be analyzed together to understand the practical quality of a multi-drone search plan.
 \end{itemize}
-
-The plots obtained for the detection radius experiment show that sensor range
-is one of the most influential mission parameters. For the smallest tested
-radius, both planners were unable to obtain meaningful coverage and the
-expected target detection time remained equal to the full mission budget. After
-increasing the radius, both methods improved substantially. In the tested
-scenario, the greedy planner reached full coverage for larger radii, while the
-genetic algorithm achieved a very similar coverage with shorter total
-trajectories. This indicates that increasing sensor range not only improves
-the probability of detection, but can also reduce unnecessary motion because
-fewer observation points are needed to cover the same high-probability regions.
-
-The fleet-size experiment confirms the benefit of multi-drone cooperation, but
-also shows that the relationship between the number of drones and mission
-quality is not strictly linear. For the greedy planner, increasing the fleet
-from one to several drones improved coverage and significantly reduced the
-expected target detection time. However, after full coverage was reached,
-additional drones mainly changed the distribution of work and did not provide
-proportional gains in all metrics. This is visible in the coverage-per-distance
-plot, where more drones do not automatically imply better efficiency.
-
-The comparison between the greedy planner and the genetic algorithm highlights
-a trade-off between coverage maximization and compact trajectory generation.
-The greedy method produced strong coverage results and reacted clearly to
-additional drones, but it often required longer total trajectories. The genetic
-algorithm usually generated shorter trajectories and higher coverage per
-distance, especially in the fleet-size experiment, but its coverage was less
-stable across different numbers of drones. This behavior is consistent with the
-stochastic nature of evolutionary optimization and suggests that repeated runs
-or larger populations would be useful for more robust statistical conclusions.
-
-The newly introduced expected target detection time metric proved especially
-important in interpreting the plots. Coverage alone only describes whether
-regions are eventually observed, while expected detection time also captures
-when high-probability regions are reached. As a result, two trajectories with
-similar final coverage can differ significantly in mission usefulness if one of
-them observes likely target locations earlier. This metric is therefore the
-most appropriate single indicator for the search-and-rescue objective
-formulated in this project.
 
 The current implementation provides a functional simulation and evaluation
 framework, but several limitations remain. The drone motion model is simplified,
@@ -1276,10 +1240,6 @@ Overall, the obtained results show that multi-drone search planning can benefit
 from combining probabilistic target modeling with terrain-aware visibility
 analysis. The developed framework makes it possible to compare planning
 strategies and evaluate how mission parameters influence search effectiveness.
-The experimental plots demonstrate that no single metric is sufficient on its
-own: coverage, expected detection time, total distance, and coverage per
-distance should be analyzed together to understand the practical quality of a
-multi-drone search plan.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
