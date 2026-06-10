@@ -159,6 +159,15 @@ Useful comparison batch configs:
 - `sensor_resource_grid_study` - drone count and detection radius trade-off for heatmaps.
 - `terrain_difficulty_study` - flat, hilly, and steep terrain comparison.
 
+Batch result metrics include:
+
+- `coverage` - covered search area or probability mass, depending on planner output.
+- `expected_target_detection_time` - expected waiting time until the target is detected, weighted by the probability map. Cells not detected by the planned trajectories are counted as detected at the mission `time_budget`.
+- `total_distance` - total distance flown by all drones.
+- `coverage_per_distance` - coverage divided by total distance.
+- `total_waypoints` - total number of trajectory points.
+- `best_fitness` - genetic algorithm objective value, available only for `ga`.
+
 ---
 
 ## Experiment Architecture

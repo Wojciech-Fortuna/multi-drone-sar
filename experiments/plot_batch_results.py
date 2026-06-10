@@ -25,6 +25,7 @@ PARAM_COLUMNS = [
 
 METRIC_COLUMNS = [
     "coverage",
+    "expected_target_detection_time",
     "total_distance",
     "coverage_per_distance",
     "total_waypoints",

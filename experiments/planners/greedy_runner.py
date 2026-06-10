@@ -4,6 +4,7 @@ from controllers.greedy_planner import GreedyPlanner
 from controllers.metrics import (
     multi_trajectory_distance,
     count_multi_waypoints,
+    expected_target_detection_time,
 )
 from experiments.loaders import (
     load_terrain,
@@ -45,10 +46,22 @@ def run(
         trajectories
     )
 
+    target_detection_time = expected_target_detection_time(
+        trajectories=trajectories,
+        terrain=terrain,
+        probability_map=probability_map,
+        detection_radius=detection_radius,
+        v_max=config["v_max"],
+        time_budget=time_budget,
+    )
+
     return {
         "trajectories": trajectories,
         "coverage": result["coverage"],
         "total_distance": total_distance,
+        "expected_target_detection_time": (
+            target_detection_time
+        ),
         "total_waypoints": count_multi_waypoints(
             trajectories
         ),
