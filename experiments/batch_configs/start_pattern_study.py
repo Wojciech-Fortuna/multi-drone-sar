@@ -1,12 +1,12 @@
 CONFIG = {
-    "name": "detection_radius_study",
+    "name": "start_pattern_study",
 
     "planner": ["greedy", "ga"],
 
-    "start_positions_mode": ["circle"],
+    "start_positions_mode": ["circle", "line"],
 
-    "num_drones": [3],
-    "detection_radius": [15.0, 20.0, 25.0, 30.0, 35.0],
+    "num_drones": [2, 3, 4, 5],
+    "detection_radius": [25.0],
     "time_budget": [60.0],
 
     "drone_altitude": 25.0,

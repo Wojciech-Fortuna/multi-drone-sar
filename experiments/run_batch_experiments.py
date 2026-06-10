@@ -88,8 +88,6 @@ def main() -> None:
     config_name = sys.argv[1]
     config = load_config(config_name)
 
-    terrain = load_terrain(config)
-
     planners = as_list(
         config.get("planner", ["greedy"])
     )
@@ -98,10 +96,20 @@ def main() -> None:
         config.get("start_positions_mode", ["circle"])
     )
 
+    terrains = as_list(
+        config.get("terrain", "default_hills")
+    )
+
+    probability_maps = as_list(
+        config.get("probability_map", "hotspot_10_10")
+    )
+
     combinations = list(
         product(
             planners,
             start_position_modes,
+            terrains,
+            probability_maps,
             config["num_drones"],
             config["detection_radius"],
             config["time_budget"],
@@ -131,6 +139,8 @@ def main() -> None:
     for idx, (
         planner_name,
         start_positions_mode,
+        terrain_name,
+        probability_map_name,
         num_drones,
         detection_radius,
         time_budget,
@@ -140,10 +150,18 @@ def main() -> None:
             f"[{idx}/{len(combinations)}] "
             f"planner={planner_name} "
             f"mode={start_positions_mode} "
+            f"terrain={terrain_name} "
+            f"probability_map={probability_map_name} "
             f"drones={num_drones} "
             f"radius={detection_radius} "
             f"time_budget={time_budget}"
         )
+
+        run_config = dict(config)
+        run_config["terrain"] = terrain_name
+        run_config["probability_map"] = probability_map_name
+
+        terrain = load_terrain(run_config)
 
         raw_start_positions = load_start_positions(
             mode=start_positions_mode,
@@ -161,7 +179,6 @@ def main() -> None:
             altitude=drone_altitude,
         )
 
-        run_config = dict(config)
         run_config["start_positions"] = start_positions
         run_config["drone_altitude"] = drone_altitude
 
@@ -176,6 +193,8 @@ def main() -> None:
         row = {
             "planner": planner_name,
             "start_positions_mode": start_positions_mode,
+            "terrain": terrain_name,
+            "probability_map": probability_map_name,
             "num_drones": num_drones,
             "detection_radius": detection_radius,
             "time_budget": time_budget,
@@ -193,9 +212,16 @@ def main() -> None:
         newline="",
         encoding="utf-8",
     ) as f:
+        fieldnames = []
+        for row in rows:
+            for key in row.keys():
+                if key not in fieldnames:
+                    fieldnames.append(key)
+
         writer = csv.DictWriter(
             f,
-            fieldnames=rows[0].keys(),
+            fieldnames=fieldnames,
+            extrasaction="ignore",
         )
 
         writer.writeheader()

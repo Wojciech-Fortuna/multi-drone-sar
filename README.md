@@ -11,6 +11,25 @@ A multi-drone Search and Rescue (SAR) simulation project with 3D visualization i
 
 ---
 
+## Installation
+
+Create and activate a virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install Python dependencies:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Webots is installed separately. Its `controller` Python module is provided by the Webots installation and is needed only for Webots controller scripts.
+
+---
+
 ## Running Tests
 
 ### Detection Model Test
@@ -110,6 +129,35 @@ Results are saved to:
 ```text
 results/experiments/
 ```
+
+Generate comparison plots from a finished batch run with:
+
+```bash
+python -m experiments.plot_batch_results CONFIG_NAME
+```
+
+Example:
+
+```bash
+python -m experiments.plot_batch_results planner_comparison_study
+```
+
+Plots are saved to:
+
+```text
+results/experiments/CONFIG_NAME/plots/
+```
+
+Useful comparison batch configs:
+
+- `planner_comparison_study` - greedy vs genetic algorithm as the drone fleet grows.
+- `drones_count_study` - fleet-size impact for greedy vs genetic algorithm.
+- `detection_radius_study` - sensor radius impact for greedy vs genetic algorithm.
+- `time_budget_study` - mission time budget impact for greedy vs genetic algorithm.
+- `start_pattern_study` - circular vs line deployment patterns.
+- `probability_map_study` - hotspot vs uniform probability maps.
+- `sensor_resource_grid_study` - drone count and detection radius trade-off for heatmaps.
+- `terrain_difficulty_study` - flat, hilly, and steep terrain comparison.
 
 ---
 

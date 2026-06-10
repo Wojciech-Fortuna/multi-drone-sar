@@ -1,13 +1,13 @@
 CONFIG = {
-    "name": "detection_radius_study",
+    "name": "time_budget_study",
 
     "planner": ["greedy", "ga"],
 
     "start_positions_mode": ["circle"],
 
     "num_drones": [3],
-    "detection_radius": [15.0, 20.0, 25.0, 30.0, 35.0],
-    "time_budget": [60.0],
+    "detection_radius": [25.0],
+    "time_budget": [30.0, 45.0, 60.0, 90.0, 120.0],
 
     "drone_altitude": 25.0,
     "v_max": 5.0,

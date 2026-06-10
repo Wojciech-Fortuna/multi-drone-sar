@@ -1,11 +1,11 @@
 CONFIG = {
-    "name": "detection_radius_study",
+    "name": "sensor_resource_grid_study",
 
-    "planner": ["greedy", "ga"],
+    "planner": ["greedy"],
 
     "start_positions_mode": ["circle"],
 
-    "num_drones": [3],
+    "num_drones": [1, 2, 3, 4, 5, 6],
     "detection_radius": [15.0, 20.0, 25.0, 30.0, 35.0],
     "time_budget": [60.0],
 

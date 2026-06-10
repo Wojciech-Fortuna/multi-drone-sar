@@ -1,7 +1,7 @@
 CONFIG = {
     "name": "drones_count_study",
 
-    "planner": ["greedy"],
+    "planner": ["greedy", "ga"],
 
     "start_positions_mode": ["circle"],
 

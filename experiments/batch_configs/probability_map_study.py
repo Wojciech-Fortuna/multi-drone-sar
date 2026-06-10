@@ -1,12 +1,12 @@
 CONFIG = {
-    "name": "detection_radius_study",
+    "name": "probability_map_study",
 
     "planner": ["greedy", "ga"],
 
     "start_positions_mode": ["circle"],
 
-    "num_drones": [3],
-    "detection_radius": [15.0, 20.0, 25.0, 30.0, 35.0],
+    "num_drones": [1, 2, 3, 4, 5],
+    "detection_radius": [25.0],
     "time_budget": [60.0],
 
     "drone_altitude": 25.0,
@@ -14,7 +14,7 @@ CONFIG = {
     "candidate_step": 20.0,
 
     "terrain": "default_hills",
-    "probability_map": "hotspot_10_10",
+    "probability_map": ["hotspot_10_10", "uniform"],
 
     "map": {
         "x_min": -30,
