@@ -143,7 +143,11 @@ def check_webots_target_detection(
         float(target_xyz[2]),
     ]
 
-    return distance(drone_position, target_position) <= WEBOTS_DETECTION_RADIUS
+    detection_radius = float(
+        target_status.get("detection_radius", WEBOTS_DETECTION_RADIUS)
+    )
+
+    return distance(drone_position, target_position) <= detection_radius
 
 
 def move_towards(

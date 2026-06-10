@@ -45,7 +45,8 @@ def export_terrain_to_webots_proto(
             d = idx(i + 1, j + 1)
 
             # Face winding chosen so the surface normal points upward.
-            coord_indices.append((a, b, d, c, -1))
+            coord_indices.append((a, b, d, -1))
+            coord_indices.append((a, d, c, -1))
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 

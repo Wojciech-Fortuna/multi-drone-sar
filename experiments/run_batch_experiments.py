@@ -6,6 +6,10 @@ import sys
 from itertools import product
 from pathlib import Path
 
+import numpy as np
+
+from experiments.loaders import load_terrain
+
 
 def load_config(config_name: str) -> dict:
     module = importlib.import_module(
@@ -27,6 +31,25 @@ def load_start_positions(
         num_drones=num_drones,
         altitude=altitude,
     )
+
+
+def adjust_start_positions_to_terrain(
+    start_positions,
+    terrain,
+    altitude: float,
+):
+    adjusted = []
+
+    for pos in start_positions:
+        x = float(pos[0])
+        y = float(pos[1])
+        z = float(terrain.get_height(x, y)) + float(altitude)
+
+        adjusted.append(
+            np.array([x, y, z], dtype=float)
+        )
+
+    return adjusted
 
 
 def run_planner(
@@ -64,6 +87,8 @@ def main() -> None:
 
     config_name = sys.argv[1]
     config = load_config(config_name)
+
+    terrain = load_terrain(config)
 
     planners = as_list(
         config.get("planner", ["greedy"])
@@ -120,15 +145,29 @@ def main() -> None:
             f"time_budget={time_budget}"
         )
 
-        start_positions = load_start_positions(
+        raw_start_positions = load_start_positions(
             mode=start_positions_mode,
             num_drones=num_drones,
-            altitude=30.0,
+            altitude=0.0,
         )
+
+        drone_altitude = float(
+            config.get("drone_altitude", 30.0)
+        )
+
+        start_positions = adjust_start_positions_to_terrain(
+            start_positions=raw_start_positions,
+            terrain=terrain,
+            altitude=drone_altitude,
+        )
+
+        run_config = dict(config)
+        run_config["start_positions"] = start_positions
+        run_config["drone_altitude"] = drone_altitude
 
         result = run_planner(
             planner_name=planner_name,
-            config=config,
+            config=run_config,
             start_positions=start_positions,
             detection_radius=detection_radius,
             time_budget=time_budget,

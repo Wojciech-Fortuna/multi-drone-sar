@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+import numpy as np
+
 from controllers.webots_export import (
     export_trajectories_to_json,
     export_webots_world,
@@ -20,6 +22,25 @@ def load_scenario(scenario_name: str) -> dict:
         f"experiments.scenarios.{scenario_name}"
     )
     return module.CONFIG
+
+
+def adjust_start_positions_to_terrain(
+    start_positions,
+    terrain,
+    altitude: float,
+):
+    adjusted = []
+
+    for pos in start_positions:
+        x = float(pos[0])
+        y = float(pos[1])
+        z = float(terrain.get_height(x, y)) + float(altitude)
+
+        adjusted.append(
+            np.array([x, y, z], dtype=float)
+        )
+
+    return adjusted
 
 
 def run_planner(
@@ -76,6 +97,7 @@ def resolve_target_xyz(
 def export_target_status(
     target_xyz,
     visible_in_webots: bool = True,
+    detection_radius: float = 25.0,
     output_path: str | Path = "results/target_status.json",
 ) -> Path:
     output_path = Path(output_path)
@@ -86,6 +108,7 @@ def export_target_status(
             {
                 "target_xyz": target_xyz,
                 "visible_in_webots": visible_in_webots,
+                "detection_radius": float(detection_radius),
             },
             file,
             indent=4,
@@ -100,6 +123,15 @@ def run_scenario(config: dict) -> None:
 
     terrain = load_terrain(config)
 
+    start_positions = adjust_start_positions_to_terrain(
+        start_positions=config["start_positions"],
+        terrain=terrain,
+        altitude=config["drone_altitude"],
+    )
+
+    config = dict(config)
+    config["start_positions"] = start_positions
+
     export_terrain_to_webots_proto(
         terrain,
         output_path="protos/GeneratedTerrain.proto",
@@ -110,7 +142,7 @@ def run_scenario(config: dict) -> None:
     result = run_planner(
         planner_name=planner_name,
         config=config,
-        start_positions=config["start_positions"],
+        start_positions=start_positions,
         detection_radius=config["detection_radius"],
         time_budget=config["time_budget"],
     )
@@ -144,12 +176,13 @@ def run_scenario(config: dict) -> None:
         export_target_status(
             target_xyz=target_xyz,
             visible_in_webots=config.get("show_target", True),
+            detection_radius=config["detection_radius"],
         )
 
     print()
     print(f"Scenario generated: {config['name']}")
     print(f"Planner: {planner_name}")
-    print(f"Drones: {len(config['start_positions'])}")
+    print(f"Drones: {len(start_positions)}")
 
     if "coverage" in result:
         print(f"Coverage: {result['coverage']:.2%}")
@@ -157,6 +190,11 @@ def run_scenario(config: dict) -> None:
     if target_xyz is not None:
         print(f"Target XYZ: {target_xyz}")
         print(f"Target visible: {config.get('show_target', True)}")
+
+    print()
+    print("Adjusted start positions:")
+    for idx, pos in enumerate(start_positions):
+        print(f"  drone_{idx}: {pos.tolist()}")
 
     print()
     print("Now open/reload worlds/sar_minimal.wbt in Webots.")
