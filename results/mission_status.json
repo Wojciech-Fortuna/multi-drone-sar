@@ -1,0 +1,8 @@
+{
+    "mission_finished": true,
+    "target_found": true,
+    "stop_reason": "target_found",
+    "mission_time": null,
+    "remaining_probability": null,
+    "observed_cells": null
+}

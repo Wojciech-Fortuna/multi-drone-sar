@@ -41,7 +41,7 @@ plots/*.png
 protos/GeneratedTerrain.proto
 
 # Generated results
-results/
+# results/
 
 # raport/**
 # !raport/

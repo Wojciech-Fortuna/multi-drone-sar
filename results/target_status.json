@@ -1,0 +1,9 @@
+{
+    "target_xyz": [
+        100.0,
+        100.0,
+        40.814808908858815
+    ],
+    "visible_in_webots": true,
+    "detection_radius": 50.0
+}

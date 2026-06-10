@@ -1061,6 +1061,36 @@ The greedy planner tends to react strongly to increased sensor radius because
 each selected observation point can cover more previously unobserved cells. The
 genetic algorithm can also benefit from increased radius, but its final result
 depends on population diversity and the quality of the evolved chromosome.
+The generated comparison plots for this experiment are presented in
+Figures~\ref{fig:detection-radius-coverage}--\ref{fig:detection-radius-efficiency}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/detection_radius_study/plots/line_coverage_by_detection_radius_by_planner.png}
+    \caption{Coverage as a function of detection radius for the greedy planner and genetic algorithm.}
+    \label{fig:detection-radius-coverage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/detection_radius_study/plots/line_expected_target_detection_time_by_detection_radius_by_planner.png}
+    \caption{Expected target detection time as a function of detection radius. Lower values indicate faster expected target discovery.}
+    \label{fig:detection-radius-expected-time}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/detection_radius_study/plots/line_total_distance_by_detection_radius_by_planner.png}
+    \caption{Total trajectory distance generated for different detection radius values.}
+    \label{fig:detection-radius-distance}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/detection_radius_study/plots/line_coverage_per_distance_by_detection_radius_by_planner.png}
+    \caption{Coverage per travelled distance for different detection radius values.}
+    \label{fig:detection-radius-efficiency}
+\end{figure}
 
 \subsection{Fleet size study}
 
