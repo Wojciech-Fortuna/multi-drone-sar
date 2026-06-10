@@ -1218,6 +1218,45 @@ The main conclusions are as follows:
     \item expected target detection time is a better mission-oriented metric than coverage alone.
 \end{itemize}
 
+The plots obtained for the detection radius experiment show that sensor range
+is one of the most influential mission parameters. For the smallest tested
+radius, both planners were unable to obtain meaningful coverage and the
+expected target detection time remained equal to the full mission budget. After
+increasing the radius, both methods improved substantially. In the tested
+scenario, the greedy planner reached full coverage for larger radii, while the
+genetic algorithm achieved a very similar coverage with shorter total
+trajectories. This indicates that increasing sensor range not only improves
+the probability of detection, but can also reduce unnecessary motion because
+fewer observation points are needed to cover the same high-probability regions.
+
+The fleet-size experiment confirms the benefit of multi-drone cooperation, but
+also shows that the relationship between the number of drones and mission
+quality is not strictly linear. For the greedy planner, increasing the fleet
+from one to several drones improved coverage and significantly reduced the
+expected target detection time. However, after full coverage was reached,
+additional drones mainly changed the distribution of work and did not provide
+proportional gains in all metrics. This is visible in the coverage-per-distance
+plot, where more drones do not automatically imply better efficiency.
+
+The comparison between the greedy planner and the genetic algorithm highlights
+a trade-off between coverage maximization and compact trajectory generation.
+The greedy method produced strong coverage results and reacted clearly to
+additional drones, but it often required longer total trajectories. The genetic
+algorithm usually generated shorter trajectories and higher coverage per
+distance, especially in the fleet-size experiment, but its coverage was less
+stable across different numbers of drones. This behavior is consistent with the
+stochastic nature of evolutionary optimization and suggests that repeated runs
+or larger populations would be useful for more robust statistical conclusions.
+
+The newly introduced expected target detection time metric proved especially
+important in interpreting the plots. Coverage alone only describes whether
+regions are eventually observed, while expected detection time also captures
+when high-probability regions are reached. As a result, two trajectories with
+similar final coverage can differ significantly in mission usefulness if one of
+them observes likely target locations earlier. This metric is therefore the
+most appropriate single indicator for the search-and-rescue objective
+formulated in this project.
+
 The current implementation provides a functional simulation and evaluation
 framework, but several limitations remain. The drone motion model is simplified,
 the trajectories are planned offline, and the Webots execution layer does not
@@ -1227,12 +1266,20 @@ also uses a relatively simple representation and genetic operators.
 Future work may include online replanning, dynamic probability updates after
 partial observations, more realistic UAV dynamics, collision avoidance,
 communication constraints, larger terrain datasets, and more advanced
-evolutionary or learning-based planning methods.
+evolutionary or learning-based planning methods. In addition, future
+experiments should include repeated genetic algorithm runs with different
+random seeds, confidence intervals for the plotted metrics, and larger
+benchmark scenarios. This would make it possible to distinguish systematic
+planner behavior from stochastic variation caused by evolutionary search.
 
 Overall, the obtained results show that multi-drone search planning can benefit
 from combining probabilistic target modeling with terrain-aware visibility
 analysis. The developed framework makes it possible to compare planning
 strategies and evaluate how mission parameters influence search effectiveness.
+The experimental plots demonstrate that no single metric is sufficient on its
+own: coverage, expected detection time, total distance, and coverage per
+distance should be analyzed together to understand the practical quality of a
+multi-drone search plan.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
