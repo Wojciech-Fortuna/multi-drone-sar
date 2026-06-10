@@ -1,5 +1,16 @@
+from pathlib import Path
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+
+def save_plot(save_path):
+    path = Path(save_path)
+
+    if path.parent != Path("."):
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+    plt.savefig(path, dpi=300, bbox_inches="tight")
 
 
 def plot_trajectory_2d(terrain, probability_map, trajectory, save_path=None):
@@ -30,9 +41,10 @@ def plot_trajectory_2d(terrain, probability_map, trajectory, save_path=None):
     plt.axis("equal")
 
     if save_path is not None:
-        plt.savefig(save_path, dpi=300, bbox_inches="tight")
-
-    plt.show()
+        save_plot(save_path)
+        plt.close()
+    else:
+        plt.show()
 
 def plot_multi_trajectory_2d(terrain, probability_map, trajectories, save_path=None):
     cells = np.array(probability_map.cells)
@@ -63,6 +75,7 @@ def plot_multi_trajectory_2d(terrain, probability_map, trajectories, save_path=N
     plt.axis("equal")
 
     if save_path is not None:
-        plt.savefig(save_path, dpi=300, bbox_inches="tight")
-
-    plt.show()
+        save_plot(save_path)
+        plt.close()
+    else:
+        plt.show()
