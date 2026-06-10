@@ -42,3 +42,9 @@ protos/GeneratedTerrain.proto
 
 # Generated results
 results/
+
+# raport/**
+# !raport/
+# !raport/MISS/
+# !raport/MISS/project-report-template.tex
+# !raport/MISS/project-report-template.pdf
