@@ -1104,6 +1104,36 @@ becomes large compared to the size of the search area, additional drones may
 produce redundant coverage. This effect is visible in metrics such as
 \texttt{coverage\_per\_distance}, where more drones can increase total travelled
 distance without providing proportional improvement in coverage.
+The generated comparison plots for this experiment are presented in
+Figures~\ref{fig:drones-count-coverage}--\ref{fig:drones-count-efficiency}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/drones_count_study/plots/line_coverage_by_num_drones_by_planner.png}
+    \caption{Coverage as a function of the number of drones for the greedy planner and genetic algorithm.}
+    \label{fig:drones-count-coverage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/drones_count_study/plots/line_expected_target_detection_time_by_num_drones_by_planner.png}
+    \caption{Expected target detection time as a function of the number of drones. Lower values indicate faster expected target discovery.}
+    \label{fig:drones-count-expected-time}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/drones_count_study/plots/line_total_distance_by_num_drones_by_planner.png}
+    \caption{Total trajectory distance generated for different fleet sizes.}
+    \label{fig:drones-count-distance}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../../results/experiments/drones_count_study/plots/line_coverage_per_distance_by_num_drones_by_planner.png}
+    \caption{Coverage per travelled distance for different fleet sizes.}
+    \label{fig:drones-count-efficiency}
+\end{figure}
 
 \subsection{Time budget study}
 
